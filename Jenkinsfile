@@ -12,12 +12,22 @@ pipeline {
             }
             
         }
+
+        //  Cleanup old Dockerfile
+        stage("Cleanup Old Images..") {
+            steps {
+                script{
+                    echo "Cleanup old image.."
+                    sh "docker image prune -a -f"
+                    }
+            }
+            
+        }
         
         stage("Build Code") {
             steps {
                 script{
                     echo "Building new image.."
-                    sh 'docker rmi -f $(docker images -q)'
                     sh "docker build -t nginx-webapp ./nginx-webapp"
                     }
             }
