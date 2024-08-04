@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script{
                     echo "Building new image.."
-                    sh "docker rmi -f $(docker images -q)"
+                    sh 'docker rmi -f $(docker images -q)'
                     sh "docker build -t nginx-webapp ./nginx-webapp"
                     }
             }
