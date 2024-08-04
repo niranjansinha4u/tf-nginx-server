@@ -27,9 +27,9 @@ pipeline {
                 script{
                     echo "Pushing the image to DockerHub.."
                     withCredentials([usernamePassword(credentialsId:"dockerHub", passwordVariable:"dockerHubPass", usernameVariable:"dockerHubUser")]){
-                        sh "docker tag nginx-webapp ${env.dockerHubUser}/nginx-webapp:v1"
+                        sh "docker tag nginx-webapp ${env.dockerHubUser}/nginx-webapp:latest"
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                        sh "docker push ${env.dockerHubUser}/nginx-webapp:v1"
+                        sh "docker push ${env.dockerHubUser}/nginx-webapp:latest"
                     }
                 
                 }
