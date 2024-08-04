@@ -7,7 +7,7 @@ pipeline {
                 script{
                     echo "cloning the GitHub repo code.."
                     git url: "https://github.com/niranjansinha4u/tf-nginx-server.git", branch:"main"
-                    sh 'git pull'
+                    sh 'git pull origin main'
                 }
             }
             
