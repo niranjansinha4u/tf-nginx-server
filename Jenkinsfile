@@ -18,7 +18,8 @@ pipeline {
             steps {
                 script{
                     echo "Cleanup old image.."
-                    sh "docker image prune -a -f"
+                    sh "docker image prune -all -f"
+                    sh 'docker rmi $(docker images -q --filter "before=nginx-webapp-web:latest" nginx-webapp-web)'
                     }
             }
             
