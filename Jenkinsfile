@@ -1,5 +1,12 @@
 pipeline {
     agent any
+
+    // enviroment set
+    enviroment {
+        APP_NAME  = "nginx-webapp"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
     
     stages {
         stage("Clone Code") {
@@ -25,6 +32,20 @@ pipeline {
             }
             
         }
+
+        // Trivy File system scan ..
+        // stage("Trivy File system scan.."){
+        //     steps{
+        //         script{
+        //             dir(nginx-webapp){
+        //                 echo "Trivy File system scan.."
+        //                 sh "trivy fs . > trivyfs-report.txt"  
+        //             }
+                    
+        //         }
+        //     }
+        // }
+
         
         stage("Build Code") {
             steps {
@@ -35,6 +56,16 @@ pipeline {
             }
             
         }
+
+        // Trivy File system scan ..
+        // stage("Trivy Docker Image scan.."){
+        //     steps{
+        //         script{
+        //             sh "trivy image nginx-webapp > trivy-img-report.txt"
+                    
+        //         }
+        //     }
+        // }
         
         stage("Push to DockerHub") {
             steps {
