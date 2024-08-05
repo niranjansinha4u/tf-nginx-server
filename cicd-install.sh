@@ -24,11 +24,18 @@ sudo chmod 777 /var/run/docker.sock
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 
 #install trivy
-sudo yum wget apt-transport-https gnupg lsb-release -y
-wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-sudo yum update -y
-sudo yum install trivy -y
+# $ sudo vim /etc/yum.repos.d/trivy.repo
+# [trivy]
+# name=Trivy repository
+# baseurl=https://aquasecurity.github.io/trivy-repo/rpm/releases/$releasever/$basearch/
+# gpgcheck=0
+# enabled=1
+# $ sudo yum -y update
+# $ sudo yum -y install trivy
+
+# OR used below cmd..
+rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.rpm
+
 
 # install AWS Cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"

@@ -75,8 +75,8 @@ module "sg" {
 module "ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
-  name = "${local.name}-Server"
-  ami = data.aws_ami.ami_name.id
+  name                        = "${local.name}-Server"
+  ami                         = data.aws_ami.ami_name.id
   instance_type               = var.instance_type
   key_name                    = "CICD-SERVER"
   monitoring                  = true
@@ -85,14 +85,14 @@ module "ec2_instance" {
   associate_public_ip_address = var.associate_public_ip_address
   user_data                   = file("cicd-install.sh")
   availability_zone           = data.aws_availability_zones.azs.names[0]
-  
-  
+
+
   root_block_device = [{
-    volume_type = var.ebs_volume[0].v_type
-    volume_size = var.ebs_volume[0].v_size
+    volume_type           = var.ebs_volume[0].v_type
+    volume_size           = var.ebs_volume[0].v_size
     delete_on_termination = true
-   }]
-  
+  }]
+
 
   tags = {
     Name        = "${local.name}-Server"

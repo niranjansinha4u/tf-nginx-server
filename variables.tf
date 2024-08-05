@@ -22,7 +22,7 @@ variable "map_public_ip_on_launch" {
   description = "Public Subnet MAP ID"
   type        = string
 }
-variable "associate_public_ip_address"{
+variable "associate_public_ip_address" {
   description = "Public associate_public_ip_address"
   type        = string
 }
