@@ -78,7 +78,7 @@ pipeline {
                     //sh "docker image prune -a -f"
                     // sh 'docker image prune -f $(docker images -q --filter "before=nginx-webapp-web:latest" nginx-webapp-web)'
                     sh "docker rmi -f ${APP_NAME}:${IMAGE_TAG}"
-                    //sh "docker rmi -f demo-cicd-pipeline-web:${IMAGE_TAG}"
+                    sh "docker rmi -f demo-cicd-pipeline-web:${IMAGE_TAG}"
                     }
             }
             
@@ -88,8 +88,8 @@ pipeline {
             steps{
                 script{
                     echo "Deploying the container"
-                    //sh "docker-compose down && docker-compose up -d"
-                    sh "docker run -dp 80:80 devopsbasic/nginx-webapp:latest"
+                    sh "docker-compose down && docker-compose up -d"
+                    //sh "docker run -dp 80:80 devopsbasic/nginx-webapp:latest"
                 }
             }
         }
