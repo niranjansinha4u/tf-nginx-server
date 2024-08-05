@@ -21,6 +21,21 @@ pipeline {
             }
             
         }
+        stage("Sonarqube Analysis") {
+            steps {
+                withSonarQubeEnv('SonarQube-Server') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Demo-CICD-Pipeline \
+                    -Dsonar.projectKey=Demo-CICD-Pipeline'''
+                }
+            }
+        }
+        stage("Quality Gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-Token'
+                }
+            }
+        }
 
         // Trivy File system scan ..
         stage("Trivy File system scan.."){

@@ -52,6 +52,28 @@ module "sg" {
       protocol    = "tcp"
       description = "SSH"
       cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 9090
+      to_port     = 9090
+      protocol    = "tcp"
+      description = "SSH"
+      cidr_blocks = "0.0.0.0/0"
+    }
+    ,
+    {
+      from_port   = 3000
+      to_port     = 3000
+      protocol    = "tcp"
+      description = "SSH"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 9000
+      to_port     = 9000
+      protocol    = "tcp"
+      description = "SSH"
+      cidr_blocks = "0.0.0.0/0"
     }
   ]
 
