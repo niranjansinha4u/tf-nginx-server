@@ -92,5 +92,16 @@ pipeline {
             }
         }
     }
-    
+    post {
+             always {
+                 emailext attachLog: true,
+                 subject: "'${currentBuild.result}'",
+                 body: "Project CICD: ${env.JOB_NAME}<br/>" +
+                   "Build Number: ${env.BUILD_NUMBER}<br/>" +
+                   "URL: ${env.BUILD_URL}<br/>",
+                 to: 'niranjansinha4me@gmail.com',                              
+                 attachmentsPattern: 'trivyfs-report.txt,trivyimage.txt'
+             }
+        }
+   }
 }
