@@ -26,8 +26,10 @@ pipeline {
         stage("Trivy File system scan.."){
             steps{
                 script{
-                    echo "Trivy File system scan.."
-                    sh "trivy fs . > trivyfs-report.txt"
+                    dir('nginx-webapp'){
+                        echo "Trivy File system scan.."
+                        sh "trivy fs . > trivyfs-report.txt"
+                    }
                 }
             }
         }
@@ -48,7 +50,7 @@ pipeline {
         stage("Trivy Docker Image scan.."){
             steps{
                 script {
-                     sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image nginx-webapp:${IMAGE_TAG} --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table > trivyimage.txt')
+                     sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ${APP_NAME}:${IMAGE_TAG} --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table > trivyimage.txt')
                     }
             }
         }
@@ -76,7 +78,7 @@ pipeline {
                     //sh "docker image prune -a -f"
                     // sh 'docker image prune -f $(docker images -q --filter "before=nginx-webapp-web:latest" nginx-webapp-web)'
                     sh "docker rmi -f ${APP_NAME}:${IMAGE_TAG}"
-                    sh "docker rmi -f demo-cicd-pipeline-web:${IMAGE_TAG}"
+                    //sh "docker rmi -f demo-cicd-pipeline-web:${IMAGE_TAG}"
                     }
             }
             
@@ -86,22 +88,21 @@ pipeline {
             steps{
                 script{
                     echo "Deploying the container"
-                    sh "docker-compose down && docker-compose up -d"
-                    //sh "docker run -dp 80:80 devopsbasic/nginx-webapp:latest"
+                    //sh "docker-compose down && docker-compose up -d"
+                    sh "docker run -dp 80:80 devopsbasic/nginx-webapp:latest"
                 }
             }
         }
     }
     post {
-             always {
-                 emailext attachLog: true,
-                 subject: "'${currentBuild.result}'",
-                 body: "Project CICD: ${env.JOB_NAME}<br/>" +
-                   "Build Number: ${env.BUILD_NUMBER}<br/>" +
-                   "URL: ${env.BUILD_URL}<br/>",
-                 to: 'niranjansinha4me@gmail.com',                              
-                 attachmentsPattern: 'trivyfs-report.txt,trivyimage.txt'
-             }
+        always {
+             emailext attachLog: true,
+             subject: "'${currentBuild.result}'",
+             body: "Project CICD: ${env.JOB_NAME}<br/>" +
+               "Build Number: ${env.BUILD_NUMBER}<br/>" +
+               "URL: ${env.BUILD_URL}<br/>",
+             to: 'niranjansinha4me@gmail.com',                              
+             attachmentsPattern: 'trivyfs-report.txt,trivyimage.txt'
         }
-   }
-}
+    }
+ }
