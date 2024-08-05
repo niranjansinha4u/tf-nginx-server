@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     // enviroment set
-    enviroment {
-        APP_NAME  = "nginx-webapp"
-        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+    environment {
+        //APP_NAME  = "nginx-webapp"
+        //IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
     
